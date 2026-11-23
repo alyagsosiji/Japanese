@@ -80,6 +80,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -105,6 +106,7 @@ body {
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
 }
 
 /* Subtle astronomical atmospheric texture overlay */
@@ -145,10 +147,30 @@ button, input, select {
   color: inherit;
 }
 
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 button {
   cursor: pointer;
   background: none;
   border: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.word-card,
+.fc-card,
+.kana-tile {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 :focus-visible {
