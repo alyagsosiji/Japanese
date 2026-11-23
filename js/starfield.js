@@ -66,11 +66,11 @@
     const octx = off.getContext('2d', { alpha: false });
     octx.scale(dpr, dpr);
 
-    // 1. Deep celestial obsidian-sapphire base gradient
-    const skyGrad = octx.createLinearGradient(0, 0, w * 0.35, h);
-    skyGrad.addColorStop(0, '#040812');
-    skyGrad.addColorStop(0.45, '#071124');
-    skyGrad.addColorStop(1, '#0b1830');
+    // 1. Deep celestial sapphire-indigo base gradient (luminous night sky, never flat black)
+    const skyGrad = octx.createLinearGradient(0, 0, w * 0.4, h);
+    skyGrad.addColorStop(0, '#071022');
+    skyGrad.addColorStop(0.45, '#0b1831');
+    skyGrad.addColorStop(1, '#102242');
     octx.fillStyle = skyGrad;
     octx.fillRect(0, 0, w, h);
 
@@ -83,11 +83,11 @@
       const cy = h * (1.06 - t * 1.12 + 0.065 * Math.sin(t * Math.PI * 1.6));
 
       // Outer cool glacial blue-slate haze
-      const rOuter = Math.max(w, h) * (0.19 + 0.07 * Math.sin(t * Math.PI));
+      const rOuter = Math.max(w, h) * (0.21 + 0.07 * Math.sin(t * Math.PI));
       const gOuter = octx.createRadialGradient(cx, cy, 0, cx, cy, rOuter);
-      gOuter.addColorStop(0, 'rgba(92, 148, 214, 0.068)');
-      gOuter.addColorStop(0.48, 'rgba(42, 86, 138, 0.036)');
-      gOuter.addColorStop(1, 'rgba(7, 17, 36, 0)');
+      gOuter.addColorStop(0, 'rgba(104, 162, 228, 0.075)');
+      gOuter.addColorStop(0.48, 'rgba(48, 96, 152, 0.042)');
+      gOuter.addColorStop(1, 'rgba(11, 24, 49, 0)');
       octx.fillStyle = gOuter;
       octx.beginPath();
       octx.arc(cx, cy, rOuter, 0, Math.PI * 2);
@@ -95,29 +95,29 @@
 
       // Inner luminous silver-champagne galactic core cloud (stronger near middle-lower section)
       const coreStrength = Math.exp(-Math.pow((t - 0.44) / 0.36, 2));
-      const rCore = Math.max(w, h) * (0.095 + 0.04 * coreStrength);
+      const rCore = Math.max(w, h) * (0.1 + 0.045 * coreStrength);
       const jx = cx + (rand() - 0.5) * rCore * 0.35;
       const jy = cy + (rand() - 0.5) * rCore * 0.35;
       const gCore = octx.createRadialGradient(jx, jy, 0, jx, jy, rCore);
-      gCore.addColorStop(0, `rgba(232, 206, 162, ${(0.022 + 0.036 * coreStrength).toFixed(4)})`);
-      gCore.addColorStop(0.45, `rgba(154, 198, 240, ${(0.018 + 0.024 * coreStrength).toFixed(4)})`);
-      gCore.addColorStop(1, 'rgba(7, 17, 36, 0)');
+      gCore.addColorStop(0, `rgba(236, 212, 168, ${(0.026 + 0.04 * coreStrength).toFixed(4)})`);
+      gCore.addColorStop(0.45, `rgba(160, 204, 246, ${(0.02 + 0.026 * coreStrength).toFixed(4)})`);
+      gCore.addColorStop(1, 'rgba(11, 24, 49, 0)');
       octx.fillStyle = gCore;
       octx.beginPath();
       octx.arc(jx, jy, rCore, 0, Math.PI * 2);
       octx.fill();
     }
 
-    // 3. Great Rift (subtle dark cosmic dust lane along center of the Milky Way)
-    for (let i = 0; i <= 26; i++) {
-      const t = 0.12 + (i / 26) * 0.78;
+    // 3. Great Rift (subtle cosmic dust lane along center of the Milky Way — soft indigo, never pitch black)
+    for (let i = 0; i <= 24; i++) {
+      const t = 0.14 + (i / 24) * 0.74;
       const cx = w * (-0.04 + t * 1.12) + (rand() - 0.5) * 28;
       const cy = h * (1.03 - t * 1.07 + 0.065 * Math.sin(t * Math.PI * 1.6)) + (rand() - 0.5) * 24;
-      const rDark = Math.max(w, h) * (0.042 + rand() * 0.028);
+      const rDark = Math.max(w, h) * (0.04 + rand() * 0.025);
       const gDark = octx.createRadialGradient(cx, cy, 0, cx, cy, rDark);
-      gDark.addColorStop(0, 'rgba(4, 9, 20, 0.28)');
-      gDark.addColorStop(0.6, 'rgba(4, 9, 20, 0.09)');
-      gDark.addColorStop(1, 'rgba(4, 9, 20, 0)');
+      gDark.addColorStop(0, 'rgba(7, 16, 34, 0.18)');
+      gDark.addColorStop(0.6, 'rgba(7, 16, 34, 0.06)');
+      gDark.addColorStop(1, 'rgba(7, 16, 34, 0)');
       octx.fillStyle = gDark;
       octx.beginPath();
       octx.arc(cx, cy, rDark, 0, Math.PI * 2);
@@ -308,8 +308,9 @@
   }
 
   function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
+    const rect = canvas.getBoundingClientRect();
+    width = Math.max(window.innerWidth, Math.ceil(rect.width || 0));
+    height = Math.max(window.innerHeight, Math.ceil(rect.height || 0));
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
@@ -321,10 +322,14 @@
   }
 
   let resizeTimer = null;
-  window.addEventListener('resize', () => {
+  function scheduleResize() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(resize, 160);
-  });
+  }
+  window.addEventListener('resize', scheduleResize);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', scheduleResize);
+  }
 
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && !prefersReducedMotion && !rafId) {

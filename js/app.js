@@ -626,11 +626,9 @@
                 .map(
                   (ex) => `
                 <button type="button" class="rule-chip" data-speak="${escHtml(ex.r)}">
-                  <div>
-                    <div>
-                      <span class="rule-chip-jp">${escHtml(ex.w)}</span>
-                      <span class="rule-chip-rm">${escHtml(ex.m)}</span>
-                    </div>
+                  <div class="rule-chip-body">
+                    <div class="rule-chip-jp">${escHtml(ex.w)}</div>
+                    <div class="rule-chip-rm">${escHtml(ex.m)}</div>
                     <div class="rule-chip-ko">${escHtml(ex.ko)}</div>
                     <div class="rule-chip-note">${escHtml(ex.note)}</div>
                   </div>
@@ -1939,6 +1937,15 @@
           actionBtn.closest('.word-card')?.classList.toggle('is-mastered', on);
         }
         return;
+      }
+
+      if (vocabState.hideMeanings) {
+        const koEl = e.target.closest('.word-ko');
+        if (koEl && !koEl.classList.contains('is-revealed')) {
+          e.stopPropagation();
+          koEl.classList.add('is-revealed');
+          return;
+        }
       }
 
       const card = e.target.closest('.word-card');
