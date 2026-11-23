@@ -20,7 +20,13 @@
     href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    html, body, *, *::before, *::after {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+  </style>
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <!-- Fullscreen Astronomical Milky Way Canvas -->
@@ -312,9 +318,9 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Scripts (N5 preloaded for instant initial response; N4-N1 lazy-loaded automatically) -->
-  <script src="data/kana.js"></script>
+  <script src="data/kana.js?v=4"></script>
   <script src="data/vocab-n5.js"></script>
-  <script src="js/starfield.js" defer></script>
-  <script src="js/app.js" defer></script>
+  <script src="js/starfield.js?v=4" defer></script>
+  <script src="js/app.js?v=4" defer></script>
 </body>
 </html>
